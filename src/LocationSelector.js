@@ -74,13 +74,10 @@ const LocationSelector = () => {
     setSelectedCity(cityName);
   };
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
   return (
     <div className="location-selector">
       <h2>Location Selector</h2>
+      {error && <div>Error fetching data. Please try again later.</div>}
       <div className="form-row">
         <label htmlFor="country">Country:</label>
         <select id="country" onChange={handleCountryChange} value={selectedCountry}>
