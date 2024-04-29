@@ -1,4 +1,3 @@
-// LocationSelector.js
 import React, { useState, useEffect } from 'react';
 import './LocationSelector.css';
 
@@ -11,6 +10,7 @@ const LocationSelector = () => {
   const [selectedCity, setSelectedCity] = useState('');
   const [showStateDropdown, setShowStateDropdown] = useState(false);
   const [showCityDropdown, setShowCityDropdown] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchCountries();
@@ -23,6 +23,7 @@ const LocationSelector = () => {
       setCountries(data);
     } catch (error) {
       console.error('Error fetching countries:', error);
+      setError(error);
     }
   };
 
@@ -33,7 +34,8 @@ const LocationSelector = () => {
       setStates(data);
       setShowStateDropdown(true);
     } catch (error) {
-      console.error('Error fetching states:', error);
+      console.error(`Error fetching states for ${countryName}:`, error);
+      setError(error);
     }
   };
 
@@ -44,7 +46,8 @@ const LocationSelector = () => {
       setCities(data);
       setShowCityDropdown(true);
     } catch (error) {
-      console.error('Error fetching cities:', error);
+      console.error(`Error fetching cities for ${stateName}, ${countryName}:`, error);
+      setError(error);
     }
   };
 
@@ -70,6 +73,10 @@ const LocationSelector = () => {
     const cityName = e.target.value;
     setSelectedCity(cityName);
   };
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="location-selector">
